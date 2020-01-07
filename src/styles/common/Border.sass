@@ -1,0 +1,34 @@
++theme-child('.border') using ($material)
+  &--all
+    border: 1px solid map-get($material, 'dividers')
+
+  &--top
+    border-top: 1px solid map-get($material, 'dividers')
+
+  &--bottom
+    border-bottom: 1px solid map-get($material, 'dividers')
+
+  &--left
+    border: 1px solid map-get($material, 'dividers')
+
+  &--right
+    border: 1px solid map-get($material, 'dividers')
+
+  &--in
+    box-shadow: 0 0 0 1px map-get($material, 'dividers')
+
+.border
+  &--all-none
+    border: none !important
+
+  &--top-none
+    border-top: none !important
+
+  &--bottom-none
+    border-bottom: none !important
+
+  &--left-none
+    border-left: none !important
+
+  &--right-none
+    border-right: none !important

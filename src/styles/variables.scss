@@ -1,0 +1,124 @@
+$color-pack: false;
+
+// Globals
+$font-size-root: 14px;
+$border-radius-root: 2px;
+
+// Theme
+$material-dark: (
+  'app-bar': #424242,
+  'background': #303030,
+  'cards': #424242,
+  'chips': #303030,
+  'dividers': rgba(255, 255, 255, 0.12),
+  'text': (
+    'primary': #ffffff,
+    'secondary': #ffffff,
+    'disabled': rgba(#ffffff, 0.38),
+    'link': #ffffff,
+    'link-hover': #448AFF
+  ),
+  'icons': (
+    'active': #ffffff
+  )
+);
+
+$material-light: (
+  'app-bar': #3e464c,
+  'background': #fafafa,
+  'cards': #ffffff,
+  'chips': #d0d0d0,
+  'dividers': rgba(0, 0, 0, 0.12),
+  'text': (
+    'primary': #212121,
+    'secondary': #212121,
+    'disabled': rgba(#212121, 0.38),
+    'link': #212121,
+    'link-hover': #448AFF
+  ),
+  'icons': (
+    'active': #212121
+  )
+);
+
+$headings: (
+  'h1': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'h2': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'h3': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'h4': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'h5': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'h6': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'subtitle-1': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'subtitle-2': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'body-2': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'letter-spacing': normal
+  ),
+  'body-1': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'letter-spacing': normal
+  ),
+  'caption': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'weight': 700,
+    'letter-spacing': normal
+  ),
+  'overline': (
+    'size': 1rem,
+    'line-height': 1.5,
+    'letter-spacing': normal
+  )
+);
+
+// VBtn
+$btn-letter-spacing: 0;
+
+// VTooltip
+$tooltip-background-color: var(--v-header-base);
+$tooltip-font-size: 12px;
+
+// VInput
+$input-font-size: $font-size-root

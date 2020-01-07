@@ -9,7 +9,13 @@ module.exports = {
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'vue/script-indent': ['error', 2, {
+      'baseIndent': 1,
+      'switchCase': 1,
+      'ignores': []
+    }],
+    'object-curly-spacing': 0
   },
   parserOptions: {
     parser: 'babel-eslint'
@@ -21,6 +27,12 @@ module.exports = {
       ],
       env: {
         mocha: true
+      }
+    },
+    {
+      files: ['*.vue'],
+      rules: {
+        'indent': 'off'
       }
     }
   ]
