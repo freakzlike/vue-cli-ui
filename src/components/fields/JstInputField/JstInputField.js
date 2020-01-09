@@ -1,6 +1,8 @@
 import SlotLoadingMixin from '@/mixins/SlotLoadingMixin'
-import InputFieldPropMixin from './InputFieldPropMixin'
-import JstDisplayField from './JstDisplayField'
+import InputFieldPropMixin from '../InputFieldPropMixin'
+import JstDisplayField from '../JstDisplayField'
+
+import './JstInputField.sass'
 
 export default {
   name: 'jst-input-field',
@@ -28,7 +30,7 @@ export default {
           singleLine: this.singleLine
         },
         scopedSlots: {
-          ...this.attachLoadingSlot(h)
+          loading: () => this.renderLoading(h)
         },
         on: {
           input: value => this.$emit('input', value)
@@ -39,6 +41,14 @@ export default {
       return h(JstDisplayField, {
         props: {
           field: this.field
+        }
+      })
+    },
+    renderDefaultLoading (h) {
+      return h('div', {
+        class: {
+          'jst-input-field__loading': true,
+          'jst-input-field__loading--single-line': this.singleLine
         }
       })
     }

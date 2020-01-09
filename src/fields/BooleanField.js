@@ -14,7 +14,8 @@ import i18n from '@/plugins/i18n'
  */
 
 class BooleanField extends StringableFieldMixin(Field) {
-  static displayComponent = () => import('@/components/fields/JstDisplayStringField/')
+  static displayComponent = () => import('@/components/fields/JstDisplayStringField')
+  static inputComponent = () => import('@/components/fields/JstInputBooleanField')
 
   async valueFormatter (value, data) {
     const [formattedValue, nullAsEmpty] = await Promise.all([

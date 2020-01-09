@@ -93,10 +93,7 @@
 
             <v-col cols="12" md="6" xl="3">
               <jst-view-card title="Input">
-                <v-switch v-model="input.boolean"
-                          label="label"
-                          hint="hint"
-                          persistent-hint/>
+                <jst-input-field :field="booleanField"/>
               </jst-view-card>
             </v-col>
 
@@ -107,10 +104,7 @@
                     Text
                   </v-col>
                   <v-col cols="12" md="6">
-                    <v-switch v-model="input.boolean"
-                              hint="hint"
-                              class="pt-0 mt-0"
-                              persistent-hint/>
+                    <jst-input-field :field="booleanField" single-line/>
                   </v-col>
                 </jst-row>
               </jst-view-card>
@@ -129,6 +123,44 @@
           </jst-row>
         </jst-view-card>
       </v-col>
+
+      <v-col cols="12">
+        <jst-view-card title="All display fields" toolbar content-gutter>
+          <jst-row gutter>
+            <v-col cols="6" md="3" xl="2">
+              <jst-display-field :field="charField"/>
+            </v-col>
+            <v-col cols="6" md="3" xl="2">
+              <jst-display-field :field="choiceField"/>
+            </v-col>
+            <v-col cols="6" md="3" xl="2">
+              <jst-display-field :field="booleanField"/>
+            </v-col>
+          </jst-row>
+        </jst-view-card>
+      </v-col>
+
+      <v-col cols="12">
+        <jst-view-card title="All input fields" toolbar content-gutter>
+          <jst-row gutter>
+            <v-col cols="6" md="3" xl="2">
+              <div>
+                <jst-input-field :field="charField" :debug="true"/>
+              </div>
+            </v-col>
+            <v-col cols="6" md="3" xl="2">
+              <div>
+                <jst-input-field :field="choiceField"/>
+              </div>
+            </v-col>
+            <v-col cols="6" md="3" xl="2">
+              <div>
+                <jst-input-field :field="booleanField"/>
+              </div>
+            </v-col>
+          </jst-row>
+        </jst-view-card>
+      </v-col>
     </jst-row>
   </v-container>
 </template>
@@ -143,11 +175,6 @@
     components: {JstDisplayField, JstInputField},
     data () {
       return {
-        input: {
-          field: null,
-          choice: null,
-          boolean: false
-        },
         selection: {
           field: null,
           choice: [],
@@ -171,7 +198,8 @@
         ],
         fieldInputData: {
           char: this.getLazyFunction('lazy text', 1000),
-          choice: this.getLazyFunction(50, 500)
+          choice: this.getLazyFunction(50, 500),
+          boolean: true
         }
       }
     },
@@ -206,11 +234,11 @@
       booleanField () {
         return new fields.BooleanField(
           {
-            name: 'field'
+            name: 'boolean',
+            label: 'Label',
+            hint: this.getLazyFunction('Hint', 1000)
           },
-          {
-            field: this.getLazyFunction(true, 500)
-          }
+          this.fieldInputData
         )
       }
     },
