@@ -166,8 +166,8 @@
 </template>
 
 <script>
-  import JstDisplayField from '@/components/fields/JstDisplayField'
-  import JstInputField from '@/components/fields/JstInputField'
+  import {JstDisplayField} from '@/components/fields/display'
+  import {JstInputField} from '@/components/fields/input'
   import fields from '@/fields'
 
   export default {

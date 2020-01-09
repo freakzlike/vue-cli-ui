@@ -1,6 +1,6 @@
 import SlotLoadingMixin from '@/mixins/SlotLoadingMixin'
 import InputFieldPropMixin from '../InputFieldPropMixin'
-import JstDisplayField from '../JstDisplayField'
+import JstDisplayField from '@/components/fields/display/JstDisplayField'
 
 import './JstInputField.sass'
 

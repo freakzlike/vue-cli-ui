@@ -13,8 +13,8 @@ import {StringFixFieldMixin} from './mixins'
  */
 
 class CharField extends StringFixFieldMixin(Field) {
-  static displayComponent = () => import('@/components/fields/JstDisplayStringField')
-  static inputComponent = () => import('@/components/fields/JstInputStringField')
+  static displayComponent = () => import('@/components/fields/display/JstDisplayStringField')
+  static inputComponent = () => import('@/components/fields/input/JstInputStringField')
 }
 
 export {CharField}

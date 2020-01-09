@@ -16,8 +16,8 @@ import {StringFixFieldMixin} from './mixins'
  */
 
 class ChoiceField extends StringFixFieldMixin(Field) {
-  static displayComponent = () => import('@/components/fields/JstDisplayStringField')
-  static inputComponent = () => import('@/components/fields/JstInputChoiceField')
+  static displayComponent = () => import('@/components/fields/display/JstDisplayStringField')
+  static inputComponent = () => import('@/components/fields/input/JstInputChoiceField')
 
   /**
    * Defined choices from field options
