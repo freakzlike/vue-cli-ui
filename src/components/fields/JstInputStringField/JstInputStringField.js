@@ -1,8 +1,9 @@
 import cu from '@/utils/common'
 import SlotLoadingMixin from '@/mixins/SlotLoadingMixin'
-import InputFieldPropMixin from './InputFieldPropMixin'
-import JstCircularLoading from '@/components/base/JstCircularLoading'
+import InputFieldPropMixin from '../InputFieldPropMixin'
 import {VTextField} from 'vuetify/lib'
+
+import './JstInputStringField.sass'
 
 export default {
   name: 'jst-input-string-field',
@@ -78,7 +79,12 @@ export default {
       return h(VTextField, this.getRenderFieldProps())
     },
     renderDefaultLoading (h) {
-      return h(JstCircularLoading)
+      return h('div', {
+        class: {
+          'jst-input-string-field__loading': true,
+          'jst-input-string-field__loading--single-line': this.singleLine
+        }
+      })
     }
   },
   render (h) {
