@@ -4,7 +4,7 @@
       <slot name="toolbar-prefix"/>
       <v-col class="jst-view-card__toolbar__title">
         <slot name="title">
-          <jst-circular-loading v-if="titleText === undefined" small/>
+          <div v-if="titleText === undefined" class="jst-view-card__toolbar__loading"/>
           <template v-else>
             {{ titleText }}
           </template>
@@ -15,7 +15,7 @@
 
     <v-card-title v-else :class="cardTitleClasses">
       <slot name="title">
-        <jst-circular-loading v-if="titleText === undefined" inline/>
+        <div v-if="titleText === undefined" class="jst-view-card__title__loading"/>
         <template v-else>
           {{ titleText }}
         </template>
@@ -39,7 +39,6 @@
 
 <script>
   import cu from '@/utils/common'
-  import './JstViewCard.sass'
 
   export default {
     name: 'jst-view-card',
@@ -109,3 +108,42 @@
     }
   }
 </script>
+
+<style lang="sass">
+  @import 'src/styles/include'
+
+  .jst-view-card
+    & > .v-toolbar > .v-toolbar__content
+      padding-left: 8px
+      padding-right: 8px
+
+    &__toolbar
+      padding-left: 8px
+      padding-right: 8px
+      height: 48px
+      align-items: center
+      display: flex
+      position: relative
+
+      &__title
+        font-size: 1.25rem
+        line-height: 1.5
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
+      &__loading
+        height: 26px
+
+    &__title
+      &__loading
+        flex: 1 1 auto
+        height: 21px
+
+  +theme-child('.jst-view-card') using($material)
+    &__toolbar__loading
+      background-color: map-get($material, 'loading-div')
+
+    &__title__loading
+      background-color: map-get($material, 'loading-div')
+</style>
