@@ -20,7 +20,10 @@ $material-dark: (
   ),
   'icons': (
     'active': #ffffff
-  )
+  ),
+
+  // custom
+  'loading-div': rgba(255, 255, 255, 0.12)
 );
 
 $material-light: (
@@ -38,7 +41,10 @@ $material-light: (
   ),
   'icons': (
     'active': #212121
-  )
+  ),
+
+  // custom
+  'loading-div': rgba(0, 0, 0, 0.12)
 );
 
 $headings: (

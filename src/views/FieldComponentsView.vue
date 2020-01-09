@@ -212,11 +212,11 @@
             field: this.getLazyFunction(true, 500)
           }
         )
-      },
-      methods: {
-        getLazyFunction (result, timeout) {
-          return () => new Promise(resolve => setTimeout(() => resolve(result), timeout))
-        }
+      }
+    },
+    methods: {
+      getLazyFunction (result, timeout) {
+        return () => new Promise(resolve => setTimeout(() => resolve(result), timeout))
       }
     }
   }

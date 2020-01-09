@@ -1,6 +1,6 @@
 import cu from '@/utils/common'
 import SlotLoadingMixin from '@/mixins/SlotLoadingMixin'
-import JstCircularLoading from '@/components/base/JstCircularLoading'
+import './JstDisplayStringField.sass'
 
 export default {
   name: 'jst-display-string-field',
@@ -33,11 +33,7 @@ export default {
       return h('span', this.displayValue)
     },
     renderDefaultLoading (h) {
-      return h(JstCircularLoading, {
-        props: {
-          inline: true
-        }
-      })
+      return h('div', {class: 'jst-display-string-field__loading'})
     }
   },
   render (h) {

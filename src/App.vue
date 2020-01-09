@@ -9,6 +9,9 @@
     name: 'App',
     components: {
       'main-view': () => import('@/views/MainView')
+    },
+    created () {
+      this.$vuetify.theme.dark = true
     }
   }
 </script>

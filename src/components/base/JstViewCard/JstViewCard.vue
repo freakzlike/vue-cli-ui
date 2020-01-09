@@ -39,6 +39,7 @@
 
 <script>
   import cu from '@/utils/common'
+  import './JstViewCard.sass'
 
   export default {
     name: 'jst-view-card',

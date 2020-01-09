@@ -1,7 +1,8 @@
 import cu from '@/utils/common'
 import {VBtn, VIcon} from 'vuetify/lib'
 
-import JstTooltip from './JstTooltip'
+import './JstIconButton.sass'
+import JstTooltip from '../JstTooltip'
 
 export default {
   name: 'jst-icon-button',
