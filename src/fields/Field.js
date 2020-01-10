@@ -17,11 +17,11 @@ class Field {
   /**
    * Constructor
    * @param {Object} definition Field definition
-   * @param {Object} [data=null] Optional data
+   * @param {Object} [data={}] Optional data
    */
   constructor (definition, data) {
     this._def = definition
-    this._data = data || null
+    this._data = data || {}
   }
 
   /**
@@ -98,7 +98,8 @@ class Field {
   }
 
   /**
-   * TODO: Unittest + docs
+   * Set given value to data
+   * @param {Any} value
    */
   set value (value) {
     this.callValueSetter(value, this.data)
@@ -163,11 +164,9 @@ class Field {
   }
 
   /**
-   * TODO: Unittest + docs
    * Call valueSetter either from field definition or from current instance
    * @param {Any} value
    * @param {Object} data
-   * @returns {Promise<Any>}
    */
   callValueSetter (value, data) {
     const valueSetter = this._getDefAttribute('valueSetter')
@@ -175,10 +174,41 @@ class Field {
   }
 
   /**
-   * TODO: Unittest + docs
+   * Set value according to attributeName to data
+   * @param {Any} value
+   * @param {Object} data
    */
   valueSetter (value, data) {
-    Vue.set(data, this.attributeName, value)
+    if (!this.attributeName.includes('.')) {
+      Vue.set(data, this.attributeName, value)
+    } else {
+      const subFields = this.attributeName.split('.')
+
+      // Retrieve start position for set
+      let subFieldName
+      let fieldIndex
+      let currentData = data
+      for ([fieldIndex, subFieldName] of subFields.entries()) {
+        if (fieldIndex + 1 === subFields.length) {
+          break
+        }
+
+        if (currentData.hasOwnProperty(subFieldName) && !cu.isNull(currentData[subFieldName])) {
+          currentData = currentData[subFieldName]
+        } else {
+          break
+        }
+      }
+
+      // Build nested object which will be set as value
+      const setValue = subFields.splice(fieldIndex + 1).reduceRight((obj, subFieldName) => {
+        const newObj = {}
+        newObj[subFieldName] = obj
+        return newObj
+      }, value)
+
+      Vue.set(currentData, subFieldName, setValue)
+    }
   }
 
   /**

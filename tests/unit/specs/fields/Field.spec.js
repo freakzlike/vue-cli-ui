@@ -2,6 +2,25 @@ import {expect} from 'chai'
 import Field from '@/fields/Field'
 
 describe('fields/Field.js', () => {
+  describe('constructor', () => {
+    it('should create Field', () => {
+      const def = {name: 'field', label: 'field label'}
+      const data = {field: 'value'}
+
+      const field = new Field(def, data)
+      expect(field._def).to.equal(def)
+      expect(field._data).to.equal(data)
+    })
+
+    it('should create Field with no data', () => {
+      const def = {name: 'field', label: 'field label'}
+
+      const field = new Field(def)
+      expect(field._def).to.equal(def)
+      expect(field._data).to.deep.equal({})
+    })
+  })
+
   describe('clone', () => {
     it('should clone Field', () => {
       const def = {name: 'field', label: 'field label'}
@@ -194,6 +213,43 @@ describe('fields/Field.js', () => {
     })
   })
 
+  /**
+   * Setters
+   */
+  describe('setters', () => {
+    describe('value', () => {
+      it('should set correct value', () => {
+        const fieldData = {value: 1}
+        const field = new Field({name: 'field'}, fieldData)
+        field.value = 5
+        expect(field.data).to.deep.equal({value: 1, field: 5})
+        expect(field.data).to.equal(fieldData)
+      })
+
+      it('should update correct value', () => {
+        const fieldData = {value: 1, field: 3}
+        const field = new Field({name: 'field'}, fieldData)
+        field.value = 5
+        expect(field.data).to.deep.equal({value: 1, field: 5})
+        expect(field.data).to.equal(fieldData)
+      })
+
+      it('should set correct value with no data', () => {
+        const field = new Field({name: 'field'})
+        field.value = 2
+        expect(field.data).to.deep.equal({field: 2})
+      })
+
+      it('should set correct nested value', () => {
+        const fieldData = {value: 1}
+        const field = new Field({name: 'field', attributeName: 'obj.field'}, fieldData)
+        field.value = 2
+        expect(field.data).to.deep.equal({value: 1, obj: {field: 2}})
+        expect(field.data).to.equal(fieldData)
+      })
+    })
+  })
+
   describe('getOption', () => {
     it('should return simple option', async () => {
       const expectedResult = 1
@@ -349,6 +405,106 @@ describe('fields/Field.js', () => {
       expect(field.valueGetter({struct: {dir: {field: nestedData}}})).to.be.equal(nestedData)
       const valueFunc = () => 5
       expect(field.valueGetter({struct: {dir: {field: valueFunc}}})).to.be.equal(valueFunc)
+    })
+  })
+
+  describe('callValueSetter', () => {
+    const checkCallArgs = (called, expectedArgs) => {
+      expect(called).to.have.lengthOf(1)
+      expect(called[0]).to.have.lengthOf(expectedArgs.length)
+      expectedArgs.forEach((expectedArg, index) =>
+        expect(called[0][index]).to.be.equal(expectedArg)
+      )
+    }
+
+    it('should call valueSetter from class', async () => {
+      let called = []
+      class MockField extends Field {
+        valueSetter (...args) {
+          called.push(args)
+        }
+      }
+
+      const field = new MockField({name: 'field'})
+      const args = [5, {field: 1}]
+      await field.callValueSetter(...args)
+      checkCallArgs(called, args)
+    })
+
+    it('should call valueSetter from field definition', async () => {
+      let classCalled = []
+
+      class MockField extends Field {
+        valueSetter (...args) {
+          classCalled.push(args)
+        }
+      }
+
+      let defCalled = []
+      const def = {
+        name: 'field',
+        valueSetter: (...args) => {
+          defCalled.push(args)
+        }
+      }
+
+      const field = new MockField(def)
+      const args = [5, {field: 1}]
+      await field.callValueSetter(...args)
+      checkCallArgs(defCalled, args)
+      expect(classCalled).to.have.lengthOf(0)
+    })
+  })
+
+  describe('valueSetter', () => {
+    it('should set value', () => {
+      const value = {value: 1}
+      const field = new Field({name: 'field'})
+      expect(field.data).to.deep.equal({})
+      field.valueSetter(value, field.data)
+      expect(field.data).to.deep.equal({field: value})
+      expect(field.data.field).to.equal(value)
+
+      const newValue = {value: 2}
+      field.valueSetter(newValue, field.data)
+      expect(field.data).to.deep.equal({field: newValue})
+      expect(field.data.field).to.equal(newValue)
+    })
+
+    it('should set value nested attribute', () => {
+      const value = {value: 1}
+      const field = new Field({name: 'field', attributeName: 'nested.obj.field'})
+      expect(field.data).to.deep.equal({})
+      field.valueSetter(value, field.data)
+      expect(field.data).to.deep.equal({nested: {obj: {field: value}}})
+      expect(field.data.nested.obj.field).to.equal(value)
+    })
+
+    it('should set value update nested attribute', () => {
+      const value = {value: 1}
+      const fieldData = {nested: {value: 2}, value: 3}
+      const field = new Field({name: 'field', attributeName: 'nested.obj.field'}, fieldData)
+      field.valueSetter(value, field.data)
+      expect(field.data).to.deep.equal({nested: {value: 2, obj: {field: value}}, value: 3})
+      expect(field.data.nested.obj.field).to.equal(value)
+    })
+
+    it('should set value update nested attribute null', () => {
+      const value = {value: 1}
+      const fieldData = {nested: {obj: null}}
+      const field = new Field({name: 'field', attributeName: 'nested.obj.field'}, fieldData)
+      field.valueSetter(value, field.data)
+      expect(field.data).to.deep.equal({nested: {obj: {field: value}}})
+      expect(field.data.nested.obj.field).to.equal(value)
+    })
+
+    it('should set value update nested only attribute', () => {
+      const value = {value: 1}
+      const fieldData = {nested: {obj: {field: {value: 2}}}}
+      const field = new Field({name: 'field', attributeName: 'nested.obj.field'}, fieldData)
+      field.valueSetter(value, field.data)
+      expect(field.data).to.deep.equal({nested: {obj: {field: value}}})
+      expect(field.data.nested.obj.field).to.equal(value)
     })
   })
 })
