@@ -1,5 +1,5 @@
 <template>
-  <div class="process-point">
+  <div class="process-point border--all">
     <jst-row column>
       <v-spacer/>
       <div>
@@ -35,4 +35,6 @@
     height: 80px
     border-radius: 50%
     padding: 16px
+    position: relative
+    z-index: 1
 </style>

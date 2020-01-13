@@ -19,7 +19,8 @@
                          :x="columnIndex"
                          :y="rowIndex"
                          :data="columnData"
-                         :is-main-column="mainColumnX === columnIndex"/>
+                         :is-main-column="mainColumnX === columnIndex"
+                         :connections="connections"/>
           </template>
         </jst-row>
       </template>
@@ -49,10 +50,29 @@
           {type: 0, text: '5', x: 1, y: 7},
           {type: 0, text: '6', x: 3, y: 7},
           {type: 0, text: '7', x: 5, y: 9},
-          {type: 0, text: '8', x: 1, y: 11}
+          {type: 0, text: '8', x: 1, y: 11},
+          {type: 1, x: 5, y: 5},
+          {type: 1, x: 5, y: 7},
+          {type: 1, x: 3, y: 11},
+          {type: 1, x: 1, y: 9}
         ],
         connections: [
-          {start: {x: 3, y: 1}, end: {x: 1, y: 1}}
+          {start: {x: 3, y: 1}, end: {x: 1, y: 1}},
+          {start: {x: 3, y: 1}, end: {x: 5, y: 1}},
+          {start: {x: 3, y: 1}, end: {x: 3, y: 5}},
+          {start: {x: 5, y: 1}, end: {x: 5, y: 3}},
+          {start: {x: 1, y: 1}, end: {x: 1, y: 3}},
+          {start: {x: 1, y: 3}, end: {x: 1, y: 7}},
+          {start: {x: 1, y: 7}, end: {x: 1, y: 11}},
+          {start: {x: 1, y: 7}, end: {x: 3, y: 7}},
+          {start: {x: 3, y: 5}, end: {x: 5, y: 5}},
+          {start: {x: 5, y: 3}, end: {x: 5, y: 5}},
+          {start: {x: 3, y: 5}, end: {x: 5, y: 7}},
+          {start: {x: 3, y: 5}, end: {x: 3, y: 7}},
+          {start: {x: 3, y: 7}, end: {x: 5, y: 7}},
+          {start: {x: 3, y: 7}, end: {x: 3, y: 11}},
+          {start: {x: 5, y: 7}, end: {x: 5, y: 9}},
+          {start: {x: 5, y: 9}, end: {x: 1, y: 9}}
         ]
       }
     },
@@ -100,13 +120,13 @@
     width: 80px
     height: 80px
 
-  .main-column
-    background-color: rgba(0, 0, 0, 0.3)
+    .main-column
+      background-color: rgba(0, 0, 0, 0.3)
 
-  .start-point
-    background-color: var(--v-info-base)
-    width: 80px
-    height: 80px
-    border-radius: 10px
-    padding: 16px
+    .start-point
+      background-color: var(--v-info-base)
+      width: 80px
+      height: 80px
+      border-radius: 10px
+      padding: 16px
 </style>

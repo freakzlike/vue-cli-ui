@@ -20,9 +20,12 @@
 
 <style scoped lang="sass">
   .filler-point
-    &::v-deep .icon-hover
-      opacity: 0.1
+    position: relative
+    z-index: 1
 
-    &:hover::v-deep  .icon-hover
+    &::v-deep .icon-hover
+      opacity: 0
+
+    &:hover::v-deep .icon-hover
       opacity: 1
 </style>

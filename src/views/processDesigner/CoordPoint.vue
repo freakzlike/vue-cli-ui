@@ -1,5 +1,8 @@
 <template>
   <v-col class="column-gutter" :class="cssClasses">
+    <div v-if="verticalConnection" :class="verticalConnection"/>
+    <div v-if="horizontalConnection" :class="horizontalConnection"/>
+
     <template v-if="data">
       <process-point v-if="data.type === 0"
                      :text="x + '/' + y"/>
@@ -38,6 +41,10 @@
       isMainColumn: {
         type: Boolean,
         default: false
+      },
+      connections: {
+        type: Array,
+        default: null
       }
     },
     computed: {
@@ -56,10 +63,70 @@
           classes.push('dense-row')
         }
 
+        if (this.verticalConnection || this.horizontalConnection) {
+          classes.push('has-connection')
+        }
+
         return classes
       },
       wrongCoord () {
         return Boolean(this.data && (this.x % 2 === 0 || this.y % 2 === 0))
+      },
+      verticalConnection () {
+        if (!this.connections || !this.connections.length) return null
+
+        const connections = this.connections.filter(connection =>
+          connection.start.x === this.x && connection.end.x === this.x &&
+          this.compareCoord(connection.start.y, connection.end.y, this.y))
+        if (!connections || !connections.length) return null
+
+        const classes = ['connection-line', 'connection-line--vertical']
+
+        const onlyTop = connections.some(connection =>
+          (connection.start.y === this.y && connection.end.y < this.y) ||
+          (connection.end.y === this.y && connection.start.y < this.y)
+        )
+
+        const onlyBottom = connections.some(connection =>
+          (connection.start.y === this.y && connection.end.y > this.y) ||
+          (connection.end.y === this.y && connection.start.y > this.y)
+        )
+
+        if (onlyTop && !onlyBottom) {
+          classes.push('connection-line--vertical--top')
+        } else if (onlyBottom && !onlyTop) {
+          classes.push('connection-line--vertical--bottom')
+        }
+
+        return classes
+      },
+      horizontalConnection () {
+        if (!this.connections || !this.connections.length) return null
+
+        const connections = this.connections.filter(connection =>
+          connection.start.y === this.y && connection.end.y === this.y &&
+          this.compareCoord(connection.start.x, connection.end.x, this.x))
+        if (!connections || !connections.length) return null
+
+        const classes = ['connection-line', 'connection-line--horizontal']
+
+        const onlyLeft = connections.some(connection =>
+          (connection.start.x === this.x && connection.end.x < this.x) ||
+          (connection.end.x === this.x && connection.start.x < this.x)
+        )
+
+        const onlyRight = connections.some(connection =>
+          (connection.start.x === this.x && connection.end.x > this.x) ||
+          (connection.end.x === this.x && connection.start.x > this.x)
+        )
+
+        if (onlyRight && !onlyLeft) {
+          classes.push('connection-line--horizontal--right')
+        } else if (onlyLeft && !onlyRight) {
+          classes.push('connection-line--horizontal--left')
+        }
+
+        return classes
       }
     },
     watch: {
@@ -75,6 +142,9 @@
         if (this.wrongCoord) {
           console.log('Data with invalid coord x/y', this.x, this.y, this.data)
         }
+      },
+      compareCoord (start, end, current) {
+        return (start <= current && end >= current) || (start >= current && end <= current)
       }
     }
   }
@@ -83,6 +153,7 @@
 <style lang="sass" scoped>
   $normal-size: 80px
   $dense-size: 40px
+  $connection-size: 6px
 
   .column-gutter
     width: $normal-size
@@ -104,4 +175,64 @@
       height: $dense-size
       min-height: $dense-size
       max-height: $dense-size
+
+    &.has-connection
+      position: relative
+
+    .connection-line
+      background-color: var(--v-primary-darken2)
+      position: absolute
+      width: $connection-size
+      height: $connection-size
+      top: 0
+      left: 0
+      z-index: 0
+
+      &--horizontal
+        top: ($normal-size - $connection-size) / 2
+
+        &.connection-line--horizontal--right
+          left: $normal-size / 2
+
+      &--vertical
+        left: ($normal-size - $connection-size) / 2
+
+        &.connection-line--vertical--bottom
+          top: $normal-size / 2
+
+    &:not(.dense-column)
+      .connection-line--horizontal
+        &:not(.connection-line--horizontal--left):not(.connection-line--horizontal--right)
+          width: $normal-size
+
+        &.connection-line--horizontal--left,
+        &.connection-line--horizontal--right
+          width: $normal-size / 2
+
+    &.dense-column
+      .connection-line--horizontal
+        &:not(.connection-line--horizontal--left):not(.connection-line--horizontal--right)
+          width: $dense-size
+
+        &.connection-line--horizontal--left,
+        &.connection-line--horizontal--right
+          width: $dense-size / 2
+
+    &:not(.dense-row)
+      .connection-line--vertical
+        &:not(.connection-line--vertical--top):not(.connection-line--vertical--bottom)
+          height: $normal-size
+
+        &.connection-line--vertical--top,
+        &.connection-line--vertical--bottom
+          height: $normal-size / 2
+
+    &.dense-row
+      .connection-line--vertical
+        &:not(.connection-line--vertical--top):not(.connection-line--vertical--bottom)
+          height: $dense-size
+
+        &.connection-line--vertical--top,
+        &.connection-line--vertical--bottom
+          height: $dense-size / 2
 </style>
