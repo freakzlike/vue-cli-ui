@@ -9,7 +9,9 @@
       </a>
       <router-link class="mx-2" :to="{name: 'BaseComponentsView'}">BaseComponents</router-link>
       <router-link class="mx-2" :to="{name: 'FieldComponentsView'}">FieldComponents</router-link>
+      <router-link class="mx-2" :to="{name: 'ProcessDesignerView'}">ProcessDesigner</router-link>
     </v-row>
+    <v-divider/>
     <router-view :key="$route.fullPath"/>
   </v-container>
 </template>

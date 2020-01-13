@@ -18,5 +18,10 @@ export default [
     path: '/components/fields',
     name: 'FieldComponentsView',
     component: () => import('@/views/FieldComponentsView')
+  },
+  {
+    path: '/views/process-designer',
+    name: 'ProcessDesignerView',
+    component: () => import('@/views/processDesigner/ProcessDesignerView')
   }
 ]

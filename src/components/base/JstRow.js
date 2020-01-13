@@ -7,6 +7,10 @@ export default {
     gutter: {
       type: Boolean,
       default: false
+    },
+    column: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -20,11 +24,21 @@ export default {
       }
 
       return props
+    },
+    cssClasses () {
+      const classes = []
+
+      if (this.column) {
+        classes.push('fill-height', 'flex-column', 'flex-nowrap')
+      }
+
+      return classes
     }
   },
   render (h) {
     return h(VRow, {
       props: this.props,
+      class: this.cssClasses,
       attrs: this.$attrs,
       on: this.$listeners
     }, this.$slots.default)
