@@ -65,7 +65,7 @@
           {start: {x: 1, y: 3}, end: {x: 1, y: 7}},
           {start: {x: 1, y: 7}, end: {x: 1, y: 11}},
           {start: {x: 1, y: 7}, end: {x: 3, y: 7}},
-          {start: {x: 3, y: 5}, end: {x: 5, y: 5}},
+          {start: {x: 5, y: 5}, end: {x: 3, y: 5}},
           {start: {x: 5, y: 3}, end: {x: 5, y: 5}},
           {start: {x: 3, y: 5}, end: {x: 5, y: 7}},
           {start: {x: 3, y: 5}, end: {x: 3, y: 7}},
@@ -115,18 +115,21 @@
 </script>
 
 <style lang="sass" scoped>
+  $gutter-size: 120px
+  $point-size: 80px
 
   .column-gutter
-    width: 80px
-    height: 80px
+    width: $gutter-size
+    height: $gutter-size
 
     .main-column
       background-color: rgba(0, 0, 0, 0.3)
 
     .start-point
       background-color: var(--v-info-base)
-      width: 80px
-      height: 80px
+      width: $point-size
+      height: $point-size
       border-radius: 10px
       padding: 16px
+      margin: ($gutter-size - $point-size) / 2
 </style>

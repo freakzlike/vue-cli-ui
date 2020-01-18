@@ -1,13 +1,15 @@
 <template>
   <v-col class="column-gutter" :class="cssClasses">
-    <div v-if="verticalConnection" :class="verticalConnection"/>
-    <div v-if="horizontalConnection" :class="horizontalConnection"/>
+    <div v-if="verticalConnections" :class="verticalConnectionClasses"/>
+    <div v-if="horizontalConnections" :class="horizontalConnectionClasses"/>
 
     <template v-if="data">
       <process-point v-if="data.type === 0"
-                     :text="x + '/' + y"/>
+                     :text="x + '/' + y"
+                     :connections="pointConnections"/>
 
-      <hub-point v-else-if="data.type === 1"/>
+      <hub-point v-else-if="data.type === 1"
+                 :connections="pointConnections"/>
     </template>
     <filler-point v-else/>
   </v-col>
@@ -63,7 +65,7 @@
           classes.push('dense-row')
         }
 
-        if (this.verticalConnection || this.horizontalConnection) {
+        if (this.verticalConnections || this.horizontalConnections) {
           classes.push('has-connection')
         }
 
@@ -72,22 +74,25 @@
       wrongCoord () {
         return Boolean(this.data && (this.x % 2 === 0 || this.y % 2 === 0))
       },
-      verticalConnection () {
+      verticalConnections () {
         if (!this.connections || !this.connections.length) return null
 
         const connections = this.connections.filter(connection =>
           connection.start.x === this.x && connection.end.x === this.x &&
           this.compareCoord(connection.start.y, connection.end.y, this.y))
-        if (!connections || !connections.length) return null
+        return connections && connections.length ? connections : null
+      },
+      verticalConnectionClasses () {
+        if (!this.verticalConnections) return null
 
         const classes = ['connection-line', 'connection-line--vertical']
 
-        const onlyTop = connections.some(connection =>
+        const onlyTop = this.verticalConnections.some(connection =>
           (connection.start.y === this.y && connection.end.y < this.y) ||
           (connection.end.y === this.y && connection.start.y < this.y)
         )
 
-        const onlyBottom = connections.some(connection =>
+        const onlyBottom = this.verticalConnections.some(connection =>
           (connection.start.y === this.y && connection.end.y > this.y) ||
           (connection.end.y === this.y && connection.start.y > this.y)
         )
@@ -100,22 +105,25 @@
 
         return classes
       },
-      horizontalConnection () {
+      horizontalConnections () {
         if (!this.connections || !this.connections.length) return null
 
         const connections = this.connections.filter(connection =>
           connection.start.y === this.y && connection.end.y === this.y &&
           this.compareCoord(connection.start.x, connection.end.x, this.x))
-        if (!connections || !connections.length) return null
+        return connections && connections.length ? connections : null
+      },
+      horizontalConnectionClasses () {
+        if (!this.horizontalConnections) return null
 
         const classes = ['connection-line', 'connection-line--horizontal']
 
-        const onlyLeft = connections.some(connection =>
+        const onlyLeft = this.horizontalConnections.some(connection =>
           (connection.start.x === this.x && connection.end.x < this.x) ||
           (connection.end.x === this.x && connection.start.x < this.x)
         )
 
-        const onlyRight = connections.some(connection =>
+        const onlyRight = this.horizontalConnections.some(connection =>
           (connection.start.x === this.x && connection.end.x > this.x) ||
           (connection.end.x === this.x && connection.start.x > this.x)
         )
@@ -127,6 +135,46 @@
         }
 
         return classes
+      },
+      pointConnections () {
+        if (!this.data || (!this.verticalConnections && !this.horizontalConnections())) return null
+        const connectionPoints = {}
+
+        if (this.verticalConnections) {
+          this.verticalConnections.forEach(connection => {
+            if (connection.start.y === this.y && connection.end.y < this.y) {
+              connectionPoints['top'] = 'start'
+            }
+            if (connection.start.y === this.y && connection.end.y > this.y) {
+              connectionPoints['bottom'] = 'start'
+            }
+            if (connection.end.y === this.y && connection.start.y < this.y) {
+              connectionPoints['top'] = 'end'
+            }
+            if (connection.end.y === this.y && connection.start.y > this.y) {
+              connectionPoints['bottom'] = 'end'
+            }
+          })
+        }
+
+        if (this.horizontalConnections) {
+          this.horizontalConnections.forEach(connection => {
+            if (connection.start.x === this.x && connection.end.x < this.x) {
+              connectionPoints['left'] = 'start'
+            }
+            if (connection.start.x === this.x && connection.end.x > this.x) {
+              connectionPoints['right'] = 'start'
+            }
+            if (connection.end.x === this.x && connection.start.x < this.x) {
+              connectionPoints['left'] = 'end'
+            }
+            if (connection.end.x === this.x && connection.start.x > this.x) {
+              connectionPoints['right'] = 'end'
+            }
+          })
+        }
+
+        return connectionPoints
       }
     },
     watch: {
@@ -151,8 +199,8 @@
 </script>
 
 <style lang="sass" scoped>
-  $normal-size: 80px
-  $dense-size: 40px
+  $normal-size: 100px
+  $dense-size: 30px
   $connection-size: 6px
 
   .column-gutter
