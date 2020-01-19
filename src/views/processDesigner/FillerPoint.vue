@@ -4,7 +4,10 @@
     <div>
       <jst-row>
         <v-spacer/>
-        <v-icon class="icon-hover">add</v-icon>
+        <v-icon class="icon-hover"
+                @click="click">
+          add
+        </v-icon>
         <v-spacer/>
       </jst-row>
     </div>
@@ -14,7 +17,12 @@
 
 <script>
   export default {
-    name: 'FillerPoint'
+    name: 'FillerPoint',
+    methods: {
+      click () {
+        this.$emit('click')
+      }
+    }
   }
 </script>
 

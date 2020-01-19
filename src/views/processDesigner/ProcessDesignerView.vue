@@ -20,7 +20,8 @@
                          :y="rowIndex"
                          :data="columnData"
                          :is-main-column="mainColumnX === columnIndex"
-                         :connections="connections"/>
+                         :connections="connections"
+                         @click:filler-point="clickFillerPoint"/>
           </template>
         </jst-row>
       </template>
@@ -109,6 +110,73 @@
         })
 
         return gutterData
+      }
+    },
+    methods: {
+      clickFillerPoint (coord) {
+        this.addFillerPoint(this.getInsertCoord(coord))
+      },
+      getInsertCoord (coord) {
+        const newCoord = {
+          x: null,
+          y: null
+        }
+        const addGrid = {x: false, y: false}
+
+        if (coord.x % 2 === 1) {
+          newCoord.x = coord.x
+        } else {
+          newCoord.x = coord.x + 1
+          addGrid.x = true
+        }
+        if (coord.y % 2 === 1) {
+          newCoord.y = coord.y
+        } else {
+          newCoord.y = coord.y + 1
+          addGrid.y = true
+        }
+
+        this.extendGrid(addGrid, newCoord)
+
+        return newCoord
+      },
+      extendGrid (addGrid, coord) {
+        if (!addGrid.x && !addGrid.y) return
+
+        if (addGrid.x && this.mainColumnX >= coord.x) {
+          this.mainColumnX += 2
+        }
+
+        this.workflowData.forEach(data => {
+          if (addGrid.x && data.x >= coord.x) {
+            this.$set(data, 'x', data.x + 2)
+          }
+          if (addGrid.y && data.y >= coord.y) {
+            this.$set(data, 'y', data.y + 2)
+          }
+        })
+
+        this.connections.forEach(data => {
+          if (addGrid.x) {
+            if (data.start.x >= coord.x) {
+              this.$set(data.start, 'x', data.start.x + 2)
+            }
+            if (data.end.x >= coord.x) {
+              this.$set(data.end, 'x', data.end.x + 2)
+            }
+          }
+          if (addGrid.y) {
+            if (data.start.y >= coord.y) {
+              this.$set(data.start, 'y', data.start.y + 2)
+            }
+            if (data.end.y >= coord.y) {
+              this.$set(data.end, 'y', data.end.y + 2)
+            }
+          }
+        })
+      },
+      addFillerPoint (coord) {
+        this.workflowData.push({type: 1, x: coord.x, y: coord.y})
       }
     }
   }

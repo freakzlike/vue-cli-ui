@@ -11,7 +11,7 @@
       <hub-point v-else-if="data.type === 1"
                  :connections="pointConnections"/>
     </template>
-    <filler-point v-else/>
+    <filler-point v-else @click="fillerPointClick"/>
   </v-col>
 </template>
 
@@ -137,7 +137,7 @@
         return classes
       },
       pointConnections () {
-        if (!this.data || (!this.verticalConnections && !this.horizontalConnections())) return null
+        if (!this.data || (!this.verticalConnections && !this.horizontalConnections)) return null
         const connectionPoints = {}
 
         if (this.verticalConnections) {
@@ -193,6 +193,9 @@
       },
       compareCoord (start, end, current) {
         return (start <= current && end >= current) || (start >= current && end <= current)
+      },
+      fillerPointClick () {
+        this.$emit('click:filler-point', {x: this.x, y: this.y})
       }
     }
   }
