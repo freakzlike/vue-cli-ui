@@ -1,27 +1,27 @@
 <template>
   <div class="hub-point__container">
     <div class="hub-point"/>
-    <div v-if="hasTopEnd" class="hub-point__end--top">
-      <arrow-point top/>
-    </div>
-    <div v-if="hasBottomEnd" class="hub-point__end--bottom">
-      <arrow-point bottom/>
-    </div>
-    <div v-if="hasLeftEnd" class="hub-point__end--left">
-      <arrow-point left/>
-    </div>
-    <div v-if="hasRightEnd" class="hub-point__end--right">
-      <arrow-point right/>
-    </div>
+    <connection-point :connection="topConnection"
+                      class="hub-point__end--top"
+                      top/>
+    <connection-point :connection="bottomConnection"
+                      class="hub-point__end--bottom"
+                      bottom/>
+    <connection-point :connection="leftConnection"
+                      class="hub-point__end--left"
+                      left/>
+    <connection-point :connection="rightConnection"
+                      class="hub-point__end--right"
+                      right/>
   </div>
 </template>
 
 <script>
-  import ArrowPoint from '@/views/processDesigner/ArrowPoint'
+  import ConnectionPoint from '@/views/processDesigner/ConnectionPoint'
 
   export default {
     name: 'HubPoint',
-    components: {ArrowPoint},
+    components: {ConnectionPoint},
     props: {
       connections: {
         type: Object,
@@ -29,17 +29,17 @@
       }
     },
     computed: {
-      hasTopEnd () {
-        return !!(this.connections && this.connections.top === 'end')
+      topConnection () {
+        return this.connections && this.connections.top ? this.connections.top : null
       },
-      hasBottomEnd () {
-        return !!(this.connections && this.connections.bottom === 'end')
+      bottomConnection () {
+        return this.connections && this.connections.bottom ? this.connections.bottom : null
       },
-      hasLeftEnd () {
-        return !!(this.connections && this.connections.left === 'end')
+      leftConnection () {
+        return this.connections && this.connections.left ? this.connections.left : null
       },
-      hasRightEnd () {
-        return !!(this.connections && this.connections.right === 'end')
+      rightConnection () {
+        return this.connections && this.connections.right ? this.connections.right : null
       }
     }
   }
@@ -73,14 +73,17 @@
         @extend .hub-point__end
         top: $margin-size - $point-size
         left: $margin-size
+
       &--bottom
         @extend .hub-point__end
         top: $margin-size + $point-size
         left: $margin-size
+
       &--left
         @extend .hub-point__end
         top: $margin-size
         left: $margin-size - $point-size
+
       &--right
         @extend .hub-point__end
         top: $margin-size

@@ -201,7 +201,7 @@
 <style lang="sass" scoped>
   $normal-size: 100px
   $dense-size: 30px
-  $connection-size: 6px
+  $connection-size: 4px
 
   .column-gutter
     width: $normal-size
