@@ -2,7 +2,7 @@
   <v-container fluid class="pa-0">
     <jst-row gutter>
       <v-col cols="12">
-        <jst-view-card title="Field" toolbar content-gutter>
+        <jst-view-card title="CharField" toolbar content-gutter>
           <jst-row gutter>
             <v-col cols="12" md="6" xl="3">
               <jst-view-card title="Display">
@@ -24,6 +24,47 @@
                   </v-col>
                   <v-col cols="12" md="6">
                     <jst-input-field :field="charField"
+                                     single-line/>
+                  </v-col>
+                </jst-row>
+              </jst-view-card>
+            </v-col>
+
+            <v-col cols="12" md="6" xl="3">
+              <jst-view-card title="Selection">
+                <v-text-field v-model="selection.field"
+                              label="label"
+                              hint="hint"
+                              persistent-hint/>
+              </jst-view-card>
+            </v-col>
+          </jst-row>
+        </jst-view-card>
+      </v-col>
+
+      <v-col cols="12">
+        <jst-view-card title="NumericField" toolbar content-gutter>
+          <jst-row gutter>
+            <v-col cols="12" md="6" xl="3">
+              <jst-view-card title="Display">
+                <jst-display-field :field="numericField"/>
+              </jst-view-card>
+            </v-col>
+
+            <v-col cols="12" md="6" xl="3">
+              <jst-view-card title="Input">
+                <jst-input-field :field="numericField"/>
+              </jst-view-card>
+            </v-col>
+
+            <v-col cols="12" md="6" xl="3">
+              <jst-view-card title="Input Single line">
+                <jst-row gutter>
+                  <v-col cols="12" md="6">
+                    Text
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <jst-input-field :field="numericField"
                                      single-line/>
                   </v-col>
                 </jst-row>
@@ -145,7 +186,7 @@
           <jst-row gutter>
             <v-col cols="6" md="3" xl="2">
               <div>
-                <jst-input-field :field="charField" :debug="true"/>
+                <jst-input-field :field="charField"/>
               </div>
             </v-col>
             <v-col cols="6" md="3" xl="2">
@@ -199,7 +240,8 @@
         fieldInputData: {
           char: this.getLazyFunction('lazy text', 1000),
           choice: this.getLazyFunction(50, 500),
-          boolean: true
+          boolean: true,
+          numeric: 35
         }
       }
     },
@@ -208,6 +250,21 @@
         return new fields.CharField(
           {
             name: 'char',
+            label: 'label',
+            hint: 'Hint',
+            options: {
+              prefix: this.getLazyFunction('Prefix', 1000),
+              suffix: this.getLazyFunction('Suffix', 1000)
+            }
+          },
+          this.fieldInputData
+        )
+      },
+      numericField () {
+        return new fields.NumericField(
+          {
+            name: 'numeric',
+            label: 'label',
             hint: 'Hint',
             options: {
               prefix: this.getLazyFunction('Prefix', 1000),
