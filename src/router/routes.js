@@ -18,5 +18,10 @@ export default [
     path: '/components/fields',
     name: 'FieldComponentsView',
     component: () => import('@/views/FieldComponentsView')
+  },
+  {
+    path: '/quarkus',
+    name: 'QuarkusIOView',
+    component: () => import('@/views/QuarkusIOView')
   }
 ]

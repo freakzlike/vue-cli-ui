@@ -9,6 +9,7 @@
       </a>
       <router-link class="mx-2" :to="{name: 'BaseComponentsView'}">BaseComponents</router-link>
       <router-link class="mx-2" :to="{name: 'FieldComponentsView'}">FieldComponents</router-link>
+      <router-link class="mx-2" :to="{name: 'QuarkusIOView'}">Quarkus.io</router-link>
     </v-row>
     <router-view :key="$route.fullPath"/>
   </v-container>
