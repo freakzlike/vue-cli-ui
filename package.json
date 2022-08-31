@@ -15,7 +15,7 @@
     "@panter/vue-i18next": "0.15.1",
     "core-js": "3.6.2",
     "i18next": "19.0.3",
-    "moment-timezone": "0.5.27",
+    "moment-timezone": "0.5.35",
     "vue": "2.6.11",
     "vue-async-computed": "3.8.2",
     "vue-moment": "4.1.0",
